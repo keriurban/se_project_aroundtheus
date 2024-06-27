@@ -109,12 +109,12 @@
   }
 
   .profile__description {
-    width: 100%;
+    max-width: 300px;
     text-align: center;
   }
 
   .profile__add-button {
-    margin: 36px 0 16px 0;
+    margin: 36px 0 0 0;
     width: 90%;
     background-size: 16px;
   }
@@ -128,10 +128,5 @@
     width: 18px;
     margin-top: 30px;
     background-size: 7.5px;
-  }
-
-  .profile__description {
-    font-size: 14px;
-    margin-top: 14px;
   }
 }
