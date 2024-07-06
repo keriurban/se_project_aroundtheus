@@ -1,0 +1,120 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 19px;
+}
+
+.modal_opened {
+  display: flex;
+}
+
+.modal__container {
+  background-color: #fff;
+  border-radius: 10px;
+  position: relative;
+  width: 430px;
+  height: 330px;
+}
+
+.modal__close {
+  background-image: url(../images/close-icon.svg);
+  border: none;
+  background-color: transparent;
+  width: 40px;
+  height: 40px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  bottom: calc(100% + 5px);
+  left: calc(100% + 5px);
+  cursor: pointer;
+}
+
+.modal__close:hover {
+  opacity: 60%;
+}
+
+.modal__heading {
+  font-size: 24px;
+  line-height: 1.2;
+  margin: 36px auto 54px 36px;
+  padding: 0;
+  max-width: 330px;
+  height: 23px;
+  font-weight: 900;
+  color: #000;
+}
+
+.modal__form {
+  display: block;
+}
+
+.modal__input {
+  padding: 0 0 13.26px;
+  border: solid #000;
+  border-width: 0 0 1px 0;
+  width: 358px;
+  height: 14px;
+  margin: 0 36px 30px 36px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #000;
+}
+
+.modal__button {
+  background-color: #000;
+  color: #fff;
+  width: 358px;
+  height: 50.15px;
+  font-size: 18px;
+  line-height: 1.2;
+  font-weight: 400;
+  margin: 18px 30px 36px 30px;
+  cursor: pointer;
+}
+
+.modal__button:hover {
+  opacity: 80%;
+}
+
+@media screen and (max-width: 600px) {
+  .modal__container {
+    width: 282px;
+    height: 322px;
+  }
+  .modal__close {
+    width: 26px;
+    height: 26px;
+    bottom: calc(100% + 25px);
+    left: calc(100% - 35px);
+    cursor: pointer;
+  }
+  .modal__heading {
+    font-size: 18px;
+    margin: 25px 22px 75px 22px;
+    max-width: 238px;
+    height: 22px;
+  }
+
+  .modal__input {
+    padding: 0 0 13px;
+    width: 238px;
+    margin: 0 22px 30px 22px;
+  }
+
+  .modal__button {
+    width: 238px;
+    height: 46px;
+    font-size: 14px;
+    margin: 15px 22px 25px 22px;
+  }
+}
