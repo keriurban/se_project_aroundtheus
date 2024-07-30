@@ -40,6 +40,25 @@
   cursor: pointer;
 }
 
+.card__like-button_active {
+  background-image: url(/images/heart-active.svg);
+}
+
 .card__like-button:hover {
   opacity: 50%;
+}
+
+.card__trash-button {
+  background: transparent url(/images/Trash.svg) center no-repeat;
+  width: 18px;
+  height: 19.3px;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  margin-top: 18px;
+  margin-left: 249px;
+}
+
+.card__trash-button:hover {
+  opacity: 60%;
 }
