@@ -58,7 +58,11 @@
       <div class="modal__container">
         <button class="modal__close" id="profile-edit-close"></button>
         <p class="modal__heading">Edit Profile</p>
-        <form class="modal__form">
+        <form
+          class="modal__form"
+          id="profile-edit-form"
+          name="profile-edit-form"
+        >
           <input
             type="text"
             class="modal__input"
@@ -83,7 +87,7 @@
       <div class="modal__container">
         <button class="modal__close" id="add-card-close"></button>
         <p class="modal__heading">New Place</p>
-        <form class="modal__form" id="add-card-form">
+        <form class="modal__form" id="add-card-form" name="add-card-form">
           <input
             type="text"
             class="modal__input"
@@ -105,13 +109,13 @@
 
     <!-- Preview Image Modal -->
     <div class="modal" id="preview-image-modal">
-      <div class="modal__container modal__type_preview">
+      <div class="modal__container modal__container_type_preview">
         <button
           type="button"
           class="modal__close"
           id="preview-image-close"
         ></button>
-        <img src="" alt="" class="modal__preview-image modal__image_popup" />
+        <img src="" alt="" class="modal__preview-image modal__image-popup" />
         <p class="modal__preview-caption"></p>
       </div>
     </div>
