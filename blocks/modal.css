@@ -28,8 +28,6 @@
   position: relative;
   width: 430px;
   height: 330px;
-  /* margin: auto;
-  padding: 36px; */
   box-sizing: border-box;
 }
 
@@ -39,7 +37,6 @@
   max-height: 75vh;
   max-width: 75vw;
   display: flex;
-  /* NEW */
   flex-direction: column;
   position: relative;
   width: auto;
@@ -153,7 +150,6 @@
 }
 
 .modal__preview-caption {
-  position: absolute;
   left: 0;
   color: white;
   top: calc(100% + 10px);
