@@ -182,13 +182,14 @@
   }
   .popup__heading {
     font-size: 18px;
-    margin: 25px 22px 75px 22px;
+    margin: 25px 22px 30px 22px;
     max-width: 238px;
     height: 22px;
+    padding: 0;
   }
 
   .popup__input {
-    padding: 0 0 13px;
+    padding: 0 0 9px;
     width: 238px;
     margin: 0 22px 30px 22px;
   }

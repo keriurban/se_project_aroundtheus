@@ -170,8 +170,3 @@ addCardForm.addEventListener("submit", handleAddCardSubmit);
 // FOR EACH
 
 initialCards.forEach((cardData) => renderCard(cardData, cardListElement));
-
-closeButtons.forEach((button) => {
-  const popup = button.closest(".popup");
-  button.addEventListener("click", () => closePopup(popup));
-});
