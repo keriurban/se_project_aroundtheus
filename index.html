@@ -53,70 +53,99 @@
         </section>
       </main>
     </div>
-    <!-- Edit Modal -->
-    <div class="modal" id="profile-edit-modal">
-      <div class="modal__container">
-        <button class="modal__close" id="profile-edit-close"></button>
-        <p class="modal__heading">Edit Profile</p>
+
+    <!-- Edit popup -->
+    <div class="popup" id="profile-edit-popup">
+      <div class="popup__container">
+        <button class="popup__close" id="profile-edit-close"></button>
         <form
-          class="modal__form"
+          class="popup__form"
           id="profile-edit-form"
           name="profile-edit-form"
         >
-          <input
-            type="text"
-            class="modal__input"
-            name="title"
-            id="profile-title-input"
-            placeholder="Name"
-          />
-          <input
-            type="text"
-            class="modal__input"
-            name="description"
-            id="profile-description-input"
-            placeholder="Description"
-          />
-          <button class="modal__button">Save</button>
+          <p class="popup__heading">Edit Profile</p>
+          <label class="popup__label">
+            <input
+              class="popup__input popup__input_type_name"
+              id="profile-title-input"
+              name="title"
+              placeholder="Name"
+              type="text"
+              required
+              minlength="2"
+              maxlength="40"
+            />
+            <span class="popup__error" id="profile-title-input-error"></span>
+          </label>
+          <label class="popup__label">
+            <input
+              class="popup__input popup__input_type_description"
+              id="profile-description-input"
+              name="description"
+              placeholder="Description"
+              type="text"
+              required
+              minlength="2"
+              maxlength="200"
+            />
+            <span
+              class="popup__error"
+              id="profile-description-input-error"
+            ></span>
+          </label>
+          <button type="submit" class="popup__button">Save</button>
         </form>
       </div>
     </div>
 
-    <!-- Add Card Modal -->
-    <div class="modal" id="add-card-modal">
-      <div class="modal__container">
-        <button class="modal__close" id="add-card-close"></button>
-        <p class="modal__heading">New Place</p>
-        <form class="modal__form" id="add-card-form" name="add-card-form">
-          <input
-            type="text"
-            class="modal__input"
-            name="title"
-            id="add-card-title-input"
-            placeholder="Title"
-          />
-          <input
-            type="text"
-            class="modal__input"
-            name="url"
-            id="add-card-url-input"
-            placeholder="Image URL"
-          />
-          <button class="modal__button">Create</button>
+    <!-- Add Card popup -->
+    <div class="popup" id="add-card-popup">
+      <div class="popup__container">
+        <button class="popup__close" id="add-card-close"></button>
+        <form class="popup__form" id="add-card-form" name="add-card-form">
+          <p class="popup__heading">New Place</p>
+          <label class="popup__label">
+            <input
+              class="popup__input popup__input_type_title"
+              id="add-card-title-input"
+              name="title"
+              placeholder="Title"
+              type="text"
+              required
+              minlength="1"
+              maxlength="30"
+            />
+            <span class="popup__error" id="add-card-title-input-error"></span>
+          </label>
+          <label class="popup__label">
+            <input
+              class="popup__input popup__input_type_url"
+              id="add-card-url-input"
+              name="url"
+              placeholder="Image URL"
+              type="url"
+              required
+            />
+            <span class="popup__error" id="add-card-url-input-error"></span>
+          </label>
+
+          <button type="submit" class="popup__button popup__button_disabled">
+            Create
+          </button>
         </form>
       </div>
     </div>
 
-    <!-- Preview Image Modal -->
-    <div class="modal" id="preview-image-modal">
-      <div class="modal__container modal__container_type_preview">
+    <!-- Preview Image popup -->
+    <div class="popup" id="preview-image-popup">
+      <div class="popup__container popup__container_type_preview">
         <button
           type="button"
-          class="modal__close"
+          class="popup__close"
           id="preview-image-close"
         ></button>
-        <img src="" alt="" class="modal__preview-image modal__image-popup" />
-        <p class="modal__preview-caption"></p>
+        <img src="" alt="" class="popup__preview-image popup__image-popup" />
+        <p class="popup__preview-caption"></p>
       </div>
     </div>
 
@@ -132,5 +161,6 @@
     </template>
 
     <script src="./scripts/index.js"></script>
+    <script src="./scripts/validation.js"></script>
   </body>
 </html>
