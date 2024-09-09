@@ -51,17 +51,15 @@ const profileDescriptionInput = profileEditForm.querySelector(
 const addCardTitleInput = addCardForm.querySelector("#add-card-title-input");
 const addCardUrlInput = addCardForm.querySelector("#add-card-url-input");
 
+const popupImageElement = previewImagepopup.querySelector(
+  ".popup__image-popup"
+);
+const popupCaption = previewImagepopup.querySelector(".popup__preview-caption");
+
 // --------FUNCTIONS
 
 // Function to handle image click and open the preview modal
 function handleImageClick(name, link) {
-  const popupImageElement = previewImagepopup.querySelector(
-    ".popup__image-popup"
-  );
-  const popupCaption = previewImagepopup.querySelector(
-    ".popup__preview-caption"
-  );
-
   popupImageElement.src = link;
   popupImageElement.alt = name;
   popupCaption.textContent = name;
@@ -101,11 +99,24 @@ function handleEsc(evt) {
   }
 }
 
-// Render card using Card class
-function renderCard(cardData, wrapper) {
+// Create a card using the Card class
+function createCard(cardData) {
   const card = new Card(cardData, "#card-template", handleImageClick);
-  const cardElement = card.getView(); // Get fully functional card element
-  wrapper.prepend(cardElement);
+  return card.getView(); // Return fully functional card element
+}
+
+// Render function
+function renderCard(cardData, method = "prepend") {
+  const cardElement = createCard(cardData);
+
+  // Check the method and use the correct one explicitly
+  if (method === "prepend") {
+    cardListElement.prepend(cardElement);
+  } else if (method === "append") {
+    cardListElement.append(cardElement);
+  } else {
+    console.error(`Unknown method: ${method}`);
+  }
 }
 
 // Event handler for profile edit form submission
@@ -121,9 +132,14 @@ function handleAddCardSubmit(e) {
   e.preventDefault();
   const name = addCardTitleInput.value;
   const link = addCardUrlInput.value;
-  renderCard({ name, link }, cardListElement);
+  renderCard({ name, link }, "prepend");
   addCardForm.reset();
   closePopup(addCardpopup);
+  const addCardSubmitButton = addCardForm.querySelector(
+    validationSettings.submitButtonSelector
+  );
+  addCardSubmitButton.classList.add(validationSettings.inactiveButtonClass);
+  addCardSubmitButton.setAttribute("disabled", true);
 }
 
 // --------EVENT LISTENERS
@@ -145,7 +161,7 @@ addCardButton.addEventListener("click", () => {
 });
 
 // Initial render of cards
-initialCards.forEach((cardData) => renderCard(cardData, cardListElement));
+initialCards.forEach((cardData) => renderCard(cardData, "prepend"));
 
 // Validation
 

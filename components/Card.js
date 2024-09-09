@@ -3,41 +3,34 @@ export default class Card {
     this._name = name;
     this._link = link;
     this._cardSelector = cardSelector;
-    this._handleImageClick = handleImageClick; // Assign the passed handler
+    this._handleImageClick = handleImageClick;
   }
 
   // Set up event listeners
+
   _setEventListeners() {
-    this._cardElement
-      .querySelector(".card__like-button")
-      .addEventListener("click", () => {
-        this._handleLikeIcon();
-      });
+    this._likeButton.addEventListener("click", () => {
+      this._handleLikeIcon();
+    });
 
-    this._cardElement
-      .querySelector(".card__trash-button")
-      .addEventListener("click", () => {
-        this._handleDeleteCard();
-      });
+    this._trashButton.addEventListener("click", () => {
+      this._handleDeleteCard();
+    });
 
-    this._cardElement
-      .querySelector(".card__image")
-      .addEventListener("click", () => {
-        this._handleImageClick(this._name, this._link); // Call the image click handler
-      });
+    this._cardImage.addEventListener("click", () => {
+      this._handleImageClick(this._name, this._link);
+    });
   }
 
   // Handle the delete button click
   _handleDeleteCard() {
     this._cardElement.remove();
-    this._cardElement = null; // Clear the reference
+    this._cardElement = null;
   }
 
   // Toggle like button
   _handleLikeIcon() {
-    this._cardElement
-      .querySelector(".card__like-button")
-      .classList.toggle("card__like-button_active");
+    this._likeButton.classList.toggle("card__like-button_active");
   }
 
   // Create and return the card element
@@ -49,15 +42,14 @@ export default class Card {
 
     this._cardElement = cardTemplate;
 
-    // Set card data (image, title)
-    const cardImageElement = this._cardElement.querySelector(".card__image");
-    const cardTitleElement = this._cardElement.querySelector(".card__title");
+    this._likeButton = this._cardElement.querySelector(".card__like-button");
+    this._trashButton = this._cardElement.querySelector(".card__trash-button");
+    this._cardImage = this._cardElement.querySelector(".card__image");
 
-    cardImageElement.src = this._link;
-    cardImageElement.alt = this._name;
-    cardTitleElement.textContent = this._name;
+    this._cardImage.src = this._link;
+    this._cardImage.alt = this._name;
+    this._cardElement.querySelector(".card__title").textContent = this._name;
 
-    // Set event listeners
     this._setEventListeners();
 
     return this._cardElement;
