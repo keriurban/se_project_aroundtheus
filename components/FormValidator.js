@@ -5,7 +5,7 @@ export default class FormValidator {
     this._inactiveButtonClass = settings.inactiveButtonClass;
     this._inputErrorClass = settings.inputErrorClass;
     this._errorClass = settings.errorClass;
-    this._form = formElement; // Use the formElement passed to the constructor
+    this._form = formElement;
   }
 
   _showInputError(inputEl, errorMessage) {
@@ -70,5 +70,10 @@ export default class FormValidator {
       this._hideInputError(inputEl);
     });
     this._toggleButtonState(); // Reset the state of the button
+  }
+
+  disableSubmitButton() {
+    this._submitButton.classList.add(this._inactiveButtonClass);
+    this._submitButton.disabled = true;
   }
 }

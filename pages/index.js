@@ -135,11 +135,12 @@ function handleAddCardSubmit(e) {
   renderCard({ name, link }, "prepend");
   addCardForm.reset();
   closePopup(addCardpopup);
-  const addCardSubmitButton = addCardForm.querySelector(
-    validationSettings.submitButtonSelector
-  );
-  addCardSubmitButton.classList.add(validationSettings.inactiveButtonClass);
-  addCardSubmitButton.setAttribute("disabled", true);
+  formValidatorForAddCard.disableSubmitButton();
+  // const addCardSubmitButton = addCardForm.querySelector(
+  //   validationSettings.submitButtonSelector
+  // );
+  // addCardSubmitButton.classList.add(validationSettings.inactiveButtonClass);
+  // addCardSubmitButton.setAttribute("disabled", true);
 }
 
 // --------EVENT LISTENERS
