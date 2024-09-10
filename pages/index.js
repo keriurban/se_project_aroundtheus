@@ -127,22 +127,6 @@ function handleProfileEditSubmit(e) {
   closePopup(profileEditpopup);
 }
 
-// Event handler for adding a new card
-function handleAddCardSubmit(e) {
-  e.preventDefault();
-  const name = addCardTitleInput.value;
-  const link = addCardUrlInput.value;
-  renderCard({ name, link }, "prepend");
-  addCardForm.reset();
-  closePopup(addCardpopup);
-  formValidatorForAddCard.disableSubmitButton();
-  // const addCardSubmitButton = addCardForm.querySelector(
-  //   validationSettings.submitButtonSelector
-  // );
-  // addCardSubmitButton.classList.add(validationSettings.inactiveButtonClass);
-  // addCardSubmitButton.setAttribute("disabled", true);
-}
-
 // --------EVENT LISTENERS
 
 // Open the profile edit popup
@@ -173,6 +157,23 @@ const validationSettings = {
   inputErrorClass: "popup__input_type_error",
   errorClass: "popup__error_visible",
 };
+
+const formValidatorForAddCard = new FormValidator(
+  validationSettings,
+  addCardForm
+);
+formValidatorForAddCard.enableValidation();
+
+// Event handler for adding a new card
+function handleAddCardSubmit(e) {
+  e.preventDefault();
+  const name = addCardTitleInput.value;
+  const link = addCardUrlInput.value;
+  renderCard({ name, link }, "prepend");
+  addCardForm.reset();
+  closePopup(addCardpopup);
+  formValidatorForAddCard.disableSubmitButton();
+}
 
 // Get all forms
 const formElements = document.querySelectorAll(".popup__form");
