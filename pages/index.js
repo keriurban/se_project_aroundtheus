@@ -132,11 +132,11 @@ const validationSettings = {
   errorClass: "popup__error_visible",
 };
 
-const formValidatorForAddCard = new FormValidator(
-  validationSettings,
-  addCardForm
-);
-formValidatorForAddCard.enableValidation();
+// const formValidatorForAddCard = new FormValidator(
+//   validationSettings,
+//   addCardForm
+// );
+// formValidatorForAddCard.enableValidation();
 
 // --------EVENT LISTENERS
 
@@ -171,7 +171,7 @@ addCardForm.addEventListener("submit", handleAddCardSubmit);
 // Open the add card popup
 addCardButton.addEventListener("click", () => {
   openPopup(addCardpopup);
-  formValidators["add-card-form"].resetValidation();
+  // formValidators["add-card-form"].resetValidation();
 });
 
 // Initial render of cards
@@ -185,7 +185,7 @@ function handleAddCardSubmit(e) {
   renderCard({ name, link }, "prepend");
   addCardForm.reset();
   closePopup(addCardpopup);
-  formValidatorForAddCard.disableSubmitButton();
+  formValidators["add-card-form"].disableSubmitButton();
 }
 
 // // Event handler for profile edit form submission
@@ -200,11 +200,11 @@ function handleAddCardSubmit(e) {
 //
 //
 //
-const formValidatorForProfileEdit = new FormValidator(
-  validationSettings,
-  profileEditForm
-);
-formValidatorForProfileEdit.enableValidation();
+// const formValidatorForProfileEdit = new FormValidator(
+//   validationSettings,
+//   profileEditForm
+// );
+// formValidatorForProfileEdit.enableValidation();
 
 // Event handler for profile edit
 function handleProfileEditSubmit(e) {
@@ -212,7 +212,7 @@ function handleProfileEditSubmit(e) {
   profileTitle.textContent = profileTitleInput.value;
   profileDescription.textContent = profileDescriptionInput.value;
   closePopup(profileEditpopup);
-  formValidatorForProfileEdit.disableSubmitButton();
+  formValidators["profile-edit-form"].disableSubmitButton();
 }
 
 //
