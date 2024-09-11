@@ -1,6 +1,8 @@
 import Card from "/components/Card.js";
 import FormValidator from "/components/FormValidator.js";
 
+const formValidators = {};
+
 // Initial card data
 const initialCards = [
   {
@@ -178,8 +180,24 @@ function handleAddCardSubmit(e) {
 // Get all forms
 const formElements = document.querySelectorAll(".popup__form");
 
-// Enable validation for each form
-formElements.forEach((formElement) => {
-  const formValidator = new FormValidator(validationSettings, formElement);
-  formValidator.enableValidation();
-});
+// // Enable validation for each form
+// formElements.forEach((formElement) => {
+//   const formValidator = new FormValidator(validationSettings, formElement);
+//   formValidator.enableValidation();
+// });
+
+const enableValidation = (validationSettings) => {
+  const formList = Array.from(
+    document.querySelectorAll(validationSettings.formSelector)
+  );
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(validationSettings, formElement);
+    const formName = formElement.getAttribute("name");
+
+    // Here you store the validator using the `name` of the form
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+};
+
+enableValidation(validationSettings);
