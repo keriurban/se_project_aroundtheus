@@ -132,12 +132,6 @@ const validationSettings = {
   errorClass: "popup__error_visible",
 };
 
-// const formValidatorForAddCard = new FormValidator(
-//   validationSettings,
-//   addCardForm
-// );
-// formValidatorForAddCard.enableValidation();
-
 // --------EVENT LISTENERS
 
 const enableValidation = (validationSettings) => {
@@ -185,26 +179,8 @@ function handleAddCardSubmit(e) {
   renderCard({ name, link }, "prepend");
   addCardForm.reset();
   closePopup(addCardpopup);
-  formValidators["add-card-form"].disableSubmitButton();
+  formValidators["add-card-form"].disableSubmitButton(true);
 }
-
-// // Event handler for profile edit form submission
-// function handleProfileEditSubmit(e) {
-//   e.preventDefault();
-//   profileTitle.textContent = profileTitleInput.value;
-//   profileDescription.textContent = profileDescriptionInput.value;
-//   closePopup(profileEditpopup);
-// }
-//
-//
-//
-//
-//
-// const formValidatorForProfileEdit = new FormValidator(
-//   validationSettings,
-//   profileEditForm
-// );
-// formValidatorForProfileEdit.enableValidation();
 
 // Event handler for profile edit
 function handleProfileEditSubmit(e) {
@@ -212,20 +188,8 @@ function handleProfileEditSubmit(e) {
   profileTitle.textContent = profileTitleInput.value;
   profileDescription.textContent = profileDescriptionInput.value;
   closePopup(profileEditpopup);
-  formValidators["profile-edit-form"].disableSubmitButton();
+  // formValidators["profile-edit-form"].disableSubmitButton();
 }
-
-//
-//
-//
-//
-//
 
 // Get all forms
 const formElements = document.querySelectorAll(".popup__form");
-
-// // Enable validation for each form
-// formElements.forEach((formElement) => {
-//   const formValidator = new FormValidator(validationSettings, formElement);
-//   formValidator.enableValidation();
-// });
