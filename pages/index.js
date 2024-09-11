@@ -121,38 +121,10 @@ function renderCard(cardData, method = "prepend") {
   }
 }
 
-// Event handler for profile edit form submission
-function handleProfileEditSubmit(e) {
-  e.preventDefault();
-  profileTitle.textContent = profileTitleInput.value;
-  profileDescription.textContent = profileDescriptionInput.value;
-  closePopup(profileEditpopup);
-}
-
-// --------EVENT LISTENERS
-
-// Open the profile edit popup
-profileEditButton.addEventListener("click", () => {
-  openPopup(profileEditpopup);
-  profileTitleInput.value = profileTitle.textContent;
-  profileDescriptionInput.value = profileDescription.textContent;
-});
-
-// Handle form submissions for profile edit and add card
-profileEditForm.addEventListener("submit", handleProfileEditSubmit);
-addCardForm.addEventListener("submit", handleAddCardSubmit);
-
-// Open the add card popup
-addCardButton.addEventListener("click", () => {
-  openPopup(addCardpopup);
-});
-
-// Initial render of cards
-initialCards.forEach((cardData) => renderCard(cardData, "prepend"));
-
 // Validation
 
 const validationSettings = {
+  formSelector: ".popup__form",
   inputSelector: ".popup__input",
   submitButtonSelector: ".popup__button",
   inactiveButtonClass: "popup__button_disabled",
@@ -166,25 +138,7 @@ const formValidatorForAddCard = new FormValidator(
 );
 formValidatorForAddCard.enableValidation();
 
-// Event handler for adding a new card
-function handleAddCardSubmit(e) {
-  e.preventDefault();
-  const name = addCardTitleInput.value;
-  const link = addCardUrlInput.value;
-  renderCard({ name, link }, "prepend");
-  addCardForm.reset();
-  closePopup(addCardpopup);
-  formValidatorForAddCard.disableSubmitButton();
-}
-
-// Get all forms
-const formElements = document.querySelectorAll(".popup__form");
-
-// // Enable validation for each form
-// formElements.forEach((formElement) => {
-//   const formValidator = new FormValidator(validationSettings, formElement);
-//   formValidator.enableValidation();
-// });
+// --------EVENT LISTENERS
 
 const enableValidation = (validationSettings) => {
   const formList = Array.from(
@@ -201,3 +155,77 @@ const enableValidation = (validationSettings) => {
 };
 
 enableValidation(validationSettings);
+
+// Open the profile edit popup
+profileEditButton.addEventListener("click", () => {
+  openPopup(profileEditpopup);
+  profileTitleInput.value = profileTitle.textContent;
+  profileDescriptionInput.value = profileDescription.textContent;
+  formValidators["profile-edit-form"].resetValidation();
+});
+
+// Handle form submissions for profile edit and add card
+profileEditForm.addEventListener("submit", handleProfileEditSubmit);
+addCardForm.addEventListener("submit", handleAddCardSubmit);
+
+// Open the add card popup
+addCardButton.addEventListener("click", () => {
+  openPopup(addCardpopup);
+  formValidators["add-card-form"].resetValidation();
+});
+
+// Initial render of cards
+initialCards.forEach((cardData) => renderCard(cardData, "prepend"));
+
+// Event handler for adding a new card
+function handleAddCardSubmit(e) {
+  e.preventDefault();
+  const name = addCardTitleInput.value;
+  const link = addCardUrlInput.value;
+  renderCard({ name, link }, "prepend");
+  addCardForm.reset();
+  closePopup(addCardpopup);
+  formValidatorForAddCard.disableSubmitButton();
+}
+
+// // Event handler for profile edit form submission
+// function handleProfileEditSubmit(e) {
+//   e.preventDefault();
+//   profileTitle.textContent = profileTitleInput.value;
+//   profileDescription.textContent = profileDescriptionInput.value;
+//   closePopup(profileEditpopup);
+// }
+//
+//
+//
+//
+//
+const formValidatorForProfileEdit = new FormValidator(
+  validationSettings,
+  profileEditForm
+);
+formValidatorForProfileEdit.enableValidation();
+
+// Event handler for profile edit
+function handleProfileEditSubmit(e) {
+  e.preventDefault();
+  profileTitle.textContent = profileTitleInput.value;
+  profileDescription.textContent = profileDescriptionInput.value;
+  closePopup(profileEditpopup);
+  formValidatorForProfileEdit.disableSubmitButton();
+}
+
+//
+//
+//
+//
+//
+
+// Get all forms
+const formElements = document.querySelectorAll(".popup__form");
+
+// // Enable validation for each form
+// formElements.forEach((formElement) => {
+//   const formValidator = new FormValidator(validationSettings, formElement);
+//   formValidator.enableValidation();
+// });
