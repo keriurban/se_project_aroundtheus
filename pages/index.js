@@ -1,28 +1,41 @@
-//start video 50 minutes https://youtu.be/Pa_jTiDcK6c
-
 //import all classes
 
 import { initialCards, selectors } from "../utils/constants.js";
 import Card from "/components/Card.js";
 import FormValidator from "/components/FormValidator.js";
 import Section from "../components/Section.js";
+import PopupWithImage from "../components/PopupWithImage.js";
 
 //create instances of the classes
 
 const cardSection = new Section(
   {
     items: initialCards,
-    renderer: (cardData) => {
-      const cardElement = createCard(cardData);
-      cardSection.addItem(cardElement);
+    renderer: (item) => {
+      const card = createCard(item);
+      cardSection.addItem(card);
     },
   },
   ".cards__list"
 );
 
+const imagePopup = new PopupWithImage("#image-popup");
+
 //initialize all instances
 
 cardSection.renderItems();
+
+document.querySelector(".cards__list").addEventListener("click", (event) => {
+  if (event.target.classList.contains("card__image")) {
+    const cardData = {
+      name: event.target.alt,
+      link: event.target.src,
+    };
+    imagePopup.open(cardData);
+  }
+});
+
+imagePopup.setEventListeners();
 
 //all the rest
 
