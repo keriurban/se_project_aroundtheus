@@ -1,5 +1,7 @@
 //import all classes
 
+import "./index.css";
+
 import {
   initialCards,
   selectors,

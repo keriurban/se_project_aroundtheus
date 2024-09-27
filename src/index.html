@@ -7,7 +7,6 @@
       name="viewport"
     />
     <title>Around the US</title>
-    <link rel="stylesheet" href="./pages/index.css" />
     <meta name="description" content="content" />
     <meta name="keywords" content="keywords" />
     <meta name="author" content="Keri Urban" />
@@ -16,19 +15,13 @@
   <body class="page">
     <div class="page__content">
       <header class="header page__section">
-        <img
-          src="./images/logo.svg"
-          alt="Around the US logo"
-          class="header__logo"
-        />
+        <img src="<%=require("./images/logo.svg")%>" alt="Around the US logo"
+        class="header__logo" />
       </header>
       <main class="content">
         <section class="profile page__section">
-          <img
-            src="./images/jacques-cousteau.png"
-            alt="Jacques Cousteau avatar"
-            class="profile__image"
-          />
+          <img src="<%=require("./images/jacques-cousteau.png")%>"" alt="Jacques
+          Cousteau avatar" class="profile__image" />
           <div class="profile__info">
             <h1 class="profile__title">Jacques Cousteau</h1>
             <button
@@ -159,7 +152,5 @@
         </div>
       </li>
     </template>
-
-    <script src="./pages/index.js" type="module"></script>
   </body>
 </html>
