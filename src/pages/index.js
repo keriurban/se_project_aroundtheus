@@ -16,8 +16,23 @@ import UserInfo from "../components/UserInfo.js";
 
 // DOM elements
 
-const profileEditForm = document.forms["profile-edit-form"];
-const addCardForm = document.forms["add-card-form"];
+const profileEditPopup = new PopupWithForm(
+  selectors.profileEditPopup,
+  (formData) => {
+    userInfo.setUserInfo({
+      name: formData.title,
+      job: formData.description,
+    });
+  }
+);
+
+const addCardPopup = new PopupWithForm(selectors.addCardPopup, (formData) => {
+  const newCard = createCard({ name: formData.title, link: formData.url });
+  cardSection.addItem(newCard);
+});
+
+const profileEditForm = profileEditPopup.getForm();
+const addCardForm = addCardPopup.getForm();
 const profileTitleInput = profileEditForm.querySelector(
   selectors.profileTitleInput
 );
@@ -45,41 +60,16 @@ const cardSection = new Section(
 );
 
 const imagePopup = new PopupWithImage(selectors.previewImagePopup);
-const addCardPopup = new PopupWithForm(selectors.addCardPopup, (formData) => {
-  const newCard = createCard({ name: formData.title, link: formData.url });
-  cardSection.addItem(newCard);
-});
 
 const userInfo = new UserInfo({
   nameSelector: selectors.profileTitle,
   jobSelector: selectors.profileDescription,
 });
 
-const profileEditPopup = new PopupWithForm(
-  selectors.profileEditPopup,
-  (formData) => {
-    userInfo.setUserInfo({
-      name: formData.title,
-      job: formData.description,
-    });
-  }
-);
-
 //initialize all instances
 
 cardSection.renderItems();
 
-document
-  .querySelector(selectors.cardSection)
-  .addEventListener("click", (event) => {
-    if (event.target.classList.contains("card__image")) {
-      const cardData = {
-        name: event.target.alt,
-        link: event.target.src,
-      };
-      imagePopup.open(cardData);
-    }
-  });
 
 imagePopup.setEventListeners();
 profileEditPopup.setEventListeners();
@@ -103,27 +93,7 @@ const formValidators = {};
 // --------FUNCTIONS
 
 function handleImageClick(name, link) {
-  popupImageElement.src = link;
-  popupImageElement.alt = name;
-  popupCaption.textContent = name;
-
   imagePopup.open({ name, link });
-}
-
-function handlePopupClick(evt) {
-  if (
-    evt.currentTarget === evt.target ||
-    evt.target.classList.contains("popup__close")
-  ) {
-    closePopup(evt.currentTarget);
-  }
-}
-
-function handleEsc(evt) {
-  if (evt.key === "Escape") {
-    const openedPopup = document.querySelector(".popup_opened");
-    closePopup(openedPopup);
-  }
 }
 
 function createCard(cardData) {
@@ -131,17 +101,6 @@ function createCard(cardData) {
   return card.getView();
 }
 
-function renderCard(cardData, method = "prepend") {
-  const cardElement = createCard(cardData);
-
-  if (method === "prepend") {
-    cardListElement.prepend(cardElement);
-  } else if (method === "append") {
-    cardListElement.append(cardElement);
-  } else {
-    console.error(`Unknown method: ${method}`);
-  }
-}
 
 const enableValidation = (validationSettings) => {
   const formList = Array.from(
@@ -158,11 +117,3 @@ const enableValidation = (validationSettings) => {
 
 enableValidation(validationSettings);
 
-profileEditButton.addEventListener("click", () => {
-  const userData = userInfo.getUserInfo();
-  profileTitleInput.value = userData.name;
-  profileDescriptionInput.value = userData.job;
-  profileEditPopup.open();
-});
-
-const formElements = document.querySelectorAll(".popup__form");
