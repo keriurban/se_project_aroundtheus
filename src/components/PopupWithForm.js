@@ -29,13 +29,7 @@ export default class PopupWithForm extends Popup {
       event.preventDefault();
       this._handleFormSubmit(this._getInputValues());
       this._formElement.reset();
-      this._submitButton.classList.add("popup__button_disabled");
-      this._submitButton.setAttribute("disabled", true);
       this.close();
     });
-  }
-
-  close() {
-    super.close();
   }
 }

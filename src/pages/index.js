@@ -70,7 +70,6 @@ const userInfo = new UserInfo({
 
 cardSection.renderItems();
 
-
 imagePopup.setEventListeners();
 profileEditPopup.setEventListeners();
 addCardPopup.setEventListeners();
@@ -81,10 +80,12 @@ profileEditButton.addEventListener("click", () => {
   const userData = userInfo.getUserInfo();
   profileTitleInput.value = userData.name;
   profileDescriptionInput.value = userData.job;
+  formValidators["profile-edit-form"].resetValidation();
   profileEditPopup.open();
 });
 
 addCardButton.addEventListener("click", () => {
+  formValidators["add-card-form"].resetValidation();
   addCardPopup.open();
 });
 
@@ -101,7 +102,6 @@ function createCard(cardData) {
   return card.getView();
 }
 
-
 const enableValidation = (validationSettings) => {
   const formList = Array.from(
     document.querySelectorAll(validationSettings.formSelector)
@@ -116,4 +116,3 @@ const enableValidation = (validationSettings) => {
 };
 
 enableValidation(validationSettings);
-
