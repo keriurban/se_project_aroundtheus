@@ -3,10 +3,11 @@
 import "./index.css";
 
 import {
-  initialCards,
+  // initialCards,
   selectors,
   validationSettings,
 } from "../utils/constants.js";
+import api from "../components/Api.js";
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
@@ -43,14 +44,14 @@ const addCardTitleInput = addCardForm.querySelector(
   selectors.addCardTitleInput
 );
 const addCardUrlInput = addCardForm.querySelector(selectors.addCardUrlInput);
-const popupImageElement = document.querySelector(selectors.popupImageElement);
-const popupCaption = document.querySelector(selectors.popupCaption);
+// const popupImageElement = document.querySelector(selectors.popupImageElement);
+// const popupCaption = document.querySelector(selectors.popupCaption);
 const profileEditButton = document.querySelector(selectors.profileEditButton);
 const addCardButton = document.querySelector(selectors.addCardButton);
 
 const cardSection = new Section(
   {
-    items: initialCards,
+    items: [],
     renderer: (item) => {
       const card = createCard(item);
       cardSection.addItem(card);
@@ -66,13 +67,41 @@ const userInfo = new UserInfo({
   jobSelector: selectors.profileDescription,
 });
 
+// const profileAvatar = document.querySelector(".profile__image");
+// const profileName = document.querySelector(".profile__title");
+// const profileAbout = document.querySelector(".profile__description");
+const profileAvatar = document.querySelector(selectors.profileAvatar);
+const profileName = document.querySelector(selectors.profileTitle);
+const profileAbout = document.querySelector(selectors.profileDescription);
+
 //initialize all instances
 
-cardSection.renderItems();
+// cardSection.renderItems();
 
 imagePopup.setEventListeners();
 profileEditPopup.setEventListeners();
 addCardPopup.setEventListeners();
+
+// Checking
+api
+  .getInitialData()
+  .then(([fetchedUserInfo, cards]) => {
+    console.log("User Info:", fetchedUserInfo);
+    console.log("Cards:", cards);
+
+    profileAvatar.src = fetchedUserInfo.avatar;
+    profileName.textContent = fetchedUserInfo.name;
+    profileAbout.textContent = fetchedUserInfo.about;
+
+    if (Array.isArray(cards)) {
+      cardSection.renderItems(cards);
+    } else {
+      console.error("Cards is not an array:", cards);
+    }
+  })
+  .catch((err) => {
+    console.error("Error fetching data:", err);
+  });
 
 //Event Listeners
 

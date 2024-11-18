@@ -36,6 +36,7 @@ export const selectors = {
   addCardForm: "form[name='add-card-form']",
   profileTitle: ".profile__title",
   profileDescription: ".profile__description",
+  profileAvatar: ".profile__image",
   profileTitleInput: "#profile-title-input",
   profileDescriptionInput: "#profile-description-input",
   addCardTitleInput: "#add-card-title-input",
