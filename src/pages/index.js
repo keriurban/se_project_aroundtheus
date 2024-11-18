@@ -1,12 +1,7 @@
-//import all classes
-
+// Import all classes and styles
 import "./index.css";
 
-import {
-  // initialCards,
-  selectors,
-  validationSettings,
-} from "../utils/constants.js";
+import { selectors, validationSettings } from "../utils/constants.js";
 import api from "../components/Api.js";
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
@@ -15,40 +10,25 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 
+// Functions
+function handleImageClick(name, link) {
+  imagePopup.open({ name, link });
+}
+
+function createCard(cardData) {
+  const card = new Card(cardData, "#card-template", handleImageClick);
+  return card.getView();
+}
+
 // DOM elements
-
-const profileEditPopup = new PopupWithForm(
-  selectors.profileEditPopup,
-  (formData) => {
-    userInfo.setUserInfo({
-      name: formData.title,
-      job: formData.description,
-    });
-  }
-);
-
-const addCardPopup = new PopupWithForm(selectors.addCardPopup, (formData) => {
-  const newCard = createCard({ name: formData.title, link: formData.url });
-  cardSection.addItem(newCard);
-});
-
-const profileEditForm = profileEditPopup.getForm();
-const addCardForm = addCardPopup.getForm();
-const profileTitleInput = profileEditForm.querySelector(
-  selectors.profileTitleInput
-);
-const profileDescriptionInput = profileEditForm.querySelector(
-  selectors.profileDescriptionInput
-);
-const addCardTitleInput = addCardForm.querySelector(
-  selectors.addCardTitleInput
-);
-const addCardUrlInput = addCardForm.querySelector(selectors.addCardUrlInput);
-// const popupImageElement = document.querySelector(selectors.popupImageElement);
-// const popupCaption = document.querySelector(selectors.popupCaption);
 const profileEditButton = document.querySelector(selectors.profileEditButton);
 const addCardButton = document.querySelector(selectors.addCardButton);
 
+const profileAvatar = document.querySelector(selectors.profileAvatar);
+const profileName = document.querySelector(selectors.profileTitle);
+const profileAbout = document.querySelector(selectors.profileDescription);
+
+// Section instance for rendering cards
 const cardSection = new Section(
   {
     items: [],
@@ -60,83 +40,84 @@ const cardSection = new Section(
   selectors.cardSection
 );
 
+// Popup instances
 const imagePopup = new PopupWithImage(selectors.previewImagePopup);
 
+const profileEditPopup = new PopupWithForm(
+  selectors.profileEditPopup,
+  (formData) => {
+    return api
+      .updateUserInfo({
+        name: formData.title,
+        about: formData.description,
+      })
+      .then((updatedData) => {
+        userInfo.setUserInfo({
+          name: updatedData.name,
+          job: updatedData.about,
+        });
+      })
+      .catch((err) => console.error("Error updating profile:", err));
+  }
+);
+
+const addCardPopup = new PopupWithForm(selectors.addCardPopup, (formData) => {
+  return api
+    .addCard({
+      name: formData.title,
+      link: formData.url,
+    })
+    .then((newCard) => {
+      const card = createCard(newCard);
+      cardSection.addItem(card);
+    })
+    .catch((err) => console.error("Error adding card:", err));
+});
+
+// User Info instance
 const userInfo = new UserInfo({
   nameSelector: selectors.profileTitle,
   jobSelector: selectors.profileDescription,
 });
 
-// const profileAvatar = document.querySelector(".profile__image");
-// const profileName = document.querySelector(".profile__title");
-// const profileAbout = document.querySelector(".profile__description");
-const profileAvatar = document.querySelector(selectors.profileAvatar);
-const profileName = document.querySelector(selectors.profileTitle);
-const profileAbout = document.querySelector(selectors.profileDescription);
-
-//initialize all instances
-
-// cardSection.renderItems();
-
+// Initialize popups
 imagePopup.setEventListeners();
 profileEditPopup.setEventListeners();
 addCardPopup.setEventListeners();
 
-// Checking
+// Fetch initial data
 api
   .getInitialData()
   .then(([fetchedUserInfo, cards]) => {
-    console.log("User Info:", fetchedUserInfo);
-    console.log("Cards:", cards);
-
     profileAvatar.src = fetchedUserInfo.avatar;
     profileName.textContent = fetchedUserInfo.name;
     profileAbout.textContent = fetchedUserInfo.about;
 
-    if (Array.isArray(cards)) {
-      cardSection.renderItems(cards);
-    } else {
-      console.error("Cards is not an array:", cards);
-    }
+    cardSection.renderItems(cards);
   })
-  .catch((err) => {
-    console.error("Error fetching data:", err);
-  });
+  .catch((err) => console.error("Error fetching data:", err));
 
-//Event Listeners
-
+// Event listeners
 profileEditButton.addEventListener("click", () => {
   const userData = userInfo.getUserInfo();
-  profileTitleInput.value = userData.name;
-  profileDescriptionInput.value = userData.job;
-  formValidators["profile-edit-form"].resetValidation();
+  profileEditPopup.setInputValues({
+    title: userData.name,
+    description: userData.job,
+  });
   profileEditPopup.open();
 });
 
 addCardButton.addEventListener("click", () => {
-  formValidators["add-card-form"].resetValidation();
   addCardPopup.open();
 });
 
+// Form validation
 const formValidators = {};
 
-// --------FUNCTIONS
-
-function handleImageClick(name, link) {
-  imagePopup.open({ name, link });
-}
-
-function createCard(cardData) {
-  const card = new Card(cardData, "#card-template", handleImageClick);
-  return card.getView();
-}
-
-const enableValidation = (validationSettings) => {
-  const formList = Array.from(
-    document.querySelectorAll(validationSettings.formSelector)
-  );
-  formList.forEach((formElement) => {
-    const validator = new FormValidator(validationSettings, formElement);
+const enableValidation = (settings) => {
+  const forms = Array.from(document.querySelectorAll(settings.formSelector));
+  forms.forEach((formElement) => {
+    const validator = new FormValidator(settings, formElement);
     const formName = formElement.getAttribute("name");
 
     formValidators[formName] = validator;
