@@ -54,6 +54,19 @@ class Api {
   getInitialData() {
     return Promise.all([this.getUserInfo(), this.getInitialCards()]);
   }
+
+  //method to delete
+  deleteCard(cardId) {
+    return fetch(`${this._baseUrl}/cards/${cardId}`, {
+      method: "DELETE",
+      headers: this._headers,
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error: ${res.status}`);
+    });
+  }
 }
 
 const api = new Api({

@@ -9,6 +9,7 @@ import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
+import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 
 // Functions
 function handleImageClick(name, link) {
@@ -16,8 +17,32 @@ function handleImageClick(name, link) {
 }
 
 function createCard(cardData) {
-  const card = new Card(cardData, "#card-template", handleImageClick);
+  const card = new Card(
+    {
+      name: cardData.name,
+      link: cardData.link,
+      _id: cardData._id,
+    },
+    "#card-template",
+    handleImageClick,
+    handleDeleteClick
+  );
   return card.getView();
+}
+
+function handleDeleteClick(cardElement, cardId) {
+  deleteConfirmationPopup.open();
+  deleteConfirmationPopup.setSubmitAction(() => {
+    api
+      .deleteCard(cardId)
+      .then(() => {
+        cardElement.remove();
+        deleteConfirmationPopup.close();
+      })
+      .catch((err) => {
+        console.error("Error deleting card:", err);
+      });
+  });
 }
 
 // DOM elements
@@ -73,6 +98,12 @@ const addCardPopup = new PopupWithForm(selectors.addCardPopup, (formData) => {
     })
     .catch((err) => console.error("Error adding card:", err));
 });
+
+const deleteConfirmationPopup = new PopupWithConfirmation(
+  selectors.deleteConfirmationPopup
+);
+
+deleteConfirmationPopup.setEventListeners();
 
 // User Info instance
 const userInfo = new UserInfo({

@@ -12,6 +12,8 @@ export const selectors = {
   profileDescriptionInput: "#profile-description-input",
   addCardTitleInput: "#add-card-title-input",
   addCardUrlInput: "#add-card-url-input",
+  deleteCardPopup: "#delete-card-popup",
+  deleteConfirmationPopup: ".popup_type_delete",
 };
 
 export const validationSettings = {

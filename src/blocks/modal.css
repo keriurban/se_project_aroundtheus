@@ -47,6 +47,7 @@
   border-radius: 10px;
   color: #000;
   position: relative;
+  /* padding-bottom: 36px; */
 }
 
 .popup__container_type_preview {
@@ -119,7 +120,7 @@
 .popup__button {
   background-color: #000000;
   color: #ffffff;
-  margin: 0 36px 0 36px;
+  margin: 36px 36px 36px 36px;
   height: 50.15px;
   width: 358px;
   font-family: "Inter", Arial, sans-serif;
