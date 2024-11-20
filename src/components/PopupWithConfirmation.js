@@ -6,19 +6,20 @@ export default class PopupWithConfirmation extends Popup {
     this._submitButton = this._popupElement.querySelector(
       ".popup__button_confirm"
     );
-    this._handleSubmit = null;
   }
 
   setSubmitAction(action) {
-    this._handleSubmit = action;
+    this._handleSubmit = action; // Sets the callback for the submit action
   }
 
   setEventListeners() {
     super.setEventListeners();
-    this._submitButton.addEventListener("click", (evt) => {
-      evt.preventDefault();
-      if (this._handleSubmit) {
-        this._handleSubmit();
+    this._submitButton.addEventListener("click", () => {
+      if (this._handleSubmit && !this._submitInProgress) {
+        this._submitInProgress = true; // Prevent double submit
+        this._handleSubmit().finally(() => {
+          this._submitInProgress = false; // Reset after action completes
+        });
       }
     });
   }

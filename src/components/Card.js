@@ -1,36 +1,51 @@
 export default class Card {
-  constructor(
-    { name, link, _id },
-    cardSelector,
-    handleImageClick,
-    handleDeleteClick
-  ) {
-    this._name = name;
-    this._link = link;
-    this._id = _id;
+  constructor(data, cardSelector, handleImageClick, handleDeleteClick) {
+    this._name = data.name;
+    this._link = data.link;
+    this._id = data._id; // Card ID
     this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
     this._handleDeleteClick = handleDeleteClick;
+    this._isRemoved = false; // Prevent multiple removals
   }
 
+  // Set up event listeners
   _setEventListeners() {
-    this._likeButton.addEventListener("click", () => {
-      this._handleLikeIcon();
-    });
-
+    this._likeButton.addEventListener("click", () => this._handleLikeIcon());
     this._trashButton.addEventListener("click", () => {
-      this._handleDeleteClick(this._cardElement, this._id);
+      if (!this._isRemoved) {
+        this._handleDeleteClick(this._id);
+      }
     });
-
-    this._cardImage.addEventListener("click", () => {
-      this._handleImageClick(this._name, this._link);
-    });
+    this._cardImage.addEventListener("click", () =>
+      this._handleImageClick(this._name, this._link)
+    );
   }
 
+  // Remove the card element
+  removeCard() {
+    if (!this._cardElement || this._isRemoved) {
+      console.warn(
+        `Card element with ID ${this._id} is already removed or null.`
+      );
+      return;
+    }
+
+    console.log(`Removing card with ID: ${this._id}`);
+
+    this._cardElement.remove(); // Remove from DOM
+    this._cardElement = null; // Nullify reference
+    this._isRemoved = true; // Prevent future removal
+
+    console.log(`Card with ID ${this._id} successfully removed.`);
+  }
+
+  // Toggle like button
   _handleLikeIcon() {
     this._likeButton.classList.toggle("card__like-button_active");
   }
 
+  // Create and return the card element
   getView() {
     const cardTemplate = document
       .querySelector(this._cardSelector)
