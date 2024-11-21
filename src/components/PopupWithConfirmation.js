@@ -9,16 +9,16 @@ export default class PopupWithConfirmation extends Popup {
   }
 
   setSubmitAction(action) {
-    this._handleSubmit = action; // Sets the callback for the submit action
+    this._handleSubmit = action;
   }
 
   setEventListeners() {
     super.setEventListeners();
     this._submitButton.addEventListener("click", () => {
       if (this._handleSubmit && !this._submitInProgress) {
-        this._submitInProgress = true; // Prevent double submit
+        this._submitInProgress = true;
         this._handleSubmit().finally(() => {
-          this._submitInProgress = false; // Reset after action completes
+          this._submitInProgress = false;
         });
       }
     });

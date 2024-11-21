@@ -4,7 +4,7 @@ export default class UserInfo {
     this._jobElement = document.querySelector(jobSelector);
     this._avatarElement = document.querySelector(avatarSelector);
 
-    this._userId = null; // Initialize user ID
+    this._userId = null;
 
     // Log an error if any of the elements are not found
     if (!this._nameElement || !this._jobElement || !this._avatarElement) {
@@ -31,7 +31,7 @@ export default class UserInfo {
     if (name) this._nameElement.textContent = name;
     if (job) this._jobElement.textContent = job;
     if (avatar) this._avatarElement.src = avatar;
-    if (id) this._userId = id; // Store user ID
+    if (id) this._userId = id;
   }
 
   /**

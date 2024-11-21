@@ -2,11 +2,11 @@ export default class Card {
   constructor(data, cardSelector, handleImageClick, handleDeleteClick) {
     this._name = data.name;
     this._link = data.link;
-    this._id = data._id; // Card ID
+    this._id = data._id;
     this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
     this._handleDeleteClick = handleDeleteClick;
-    this._isRemoved = false; // Prevent multiple removals
+    this._isRemoved = false;
   }
 
   // Set up event listeners
@@ -33,9 +33,9 @@ export default class Card {
 
     console.log(`Removing card with ID: ${this._id}`);
 
-    this._cardElement.remove(); // Remove from DOM
-    this._cardElement = null; // Nullify reference
-    this._isRemoved = true; // Prevent future removal
+    this._cardElement.remove();
+    this._cardElement = null;
+    this._isRemoved = true;
 
     console.log(`Card with ID ${this._id} successfully removed.`);
   }

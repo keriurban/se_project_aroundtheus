@@ -31,13 +31,13 @@ function createCard(cardData) {
           .deleteCard(cardId)
           .then(() => {
             console.log(`API delete successful for card ID: ${cardId}`);
-            card.removeCard(); // Remove the card from DOM
-            deleteConfirmationPopup.close(); // Close popup
+            card.removeCard();
+            deleteConfirmationPopup.close();
           })
           .catch((err) => console.error("Error deleting card:", err));
       });
 
-      deleteConfirmationPopup.open(); // Move the open call here
+      deleteConfirmationPopup.open();
     }
   );
   return card.getView();
@@ -46,6 +46,7 @@ function createCard(cardData) {
 // DOM elements
 const profileEditButton = document.querySelector(selectors.profileEditButton);
 const addCardButton = document.querySelector(selectors.addCardButton);
+const avatarEditButton = document.querySelector(".profile__avatar-edit-button");
 
 const cardSection = new Section(
   {
@@ -98,6 +99,21 @@ const deleteConfirmationPopup = new PopupWithConfirmation(
 );
 deleteConfirmationPopup.setEventListeners();
 
+const avatarEditPopup = new PopupWithForm("#avatar-edit-popup", (formData) => {
+  return api
+    .updateAvatar(formData.avatar)
+    .then((updatedUserInfo) => {
+      userInfo.setUserInfo({
+        name: updatedUserInfo.name,
+        job: updatedUserInfo.about,
+        avatar: updatedUserInfo.avatar,
+      });
+      avatarEditPopup.close();
+    })
+    .catch((err) => console.error("Error updating avatar:", err));
+});
+avatarEditPopup.setEventListeners();
+
 // User Info instance
 const userInfo = new UserInfo({
   nameSelector: selectors.profileTitle,
@@ -138,6 +154,10 @@ profileEditButton.addEventListener("click", () => {
   });
 });
 
+avatarEditButton.addEventListener("click", () => {
+  avatarEditPopup.open();
+});
+
 addCardButton.addEventListener("click", () => {
   addCardPopup.open();
 });
@@ -147,10 +167,11 @@ const formValidators = {};
 
 const enableValidation = (settings) => {
   const forms = Array.from(document.querySelectorAll(settings.formSelector));
+  console.log("Forms found by formSelector:", forms);
   forms.forEach((formElement) => {
     const validator = new FormValidator(settings, formElement);
     const formName = formElement.getAttribute("name");
-
+    console.log("Initializing validator for form:", formName);
     formValidators[formName] = validator;
     validator.enableValidation();
   });
