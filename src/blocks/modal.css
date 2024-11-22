@@ -163,8 +163,8 @@
   font-size: 12px;
   width: 100%;
   border-top: 1px solid #ff0000;
-  top: 30px;
-  padding-top: 7px;
+  top: 57px;
+  padding-top: 3px;
 }
 
 .popup__input_type_error {
@@ -177,7 +177,6 @@
 @media screen and (max-width: 600px) {
   .popup__container {
     width: 282px;
-    height: 322px;
   }
   .popup__close {
     width: 26px;

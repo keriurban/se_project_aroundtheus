@@ -12,99 +12,73 @@ class Api {
     return Promise.reject(`Error: ${res.status}`);
   }
 
-  // Method to get user information
+  // Universal method for API requests
+  _request(endpoint, options = {}) {
+    const finalOptions = {
+      headers: this._headers,
+      ...options,
+    };
+    const url = `${this._baseUrl}${endpoint}`;
+    return fetch(url, finalOptions).then(this._checkResponse);
+  }
+
+  // API methods using _request
   getUserInfo() {
-    return fetch(`${this._baseUrl}/users/me`, {
-      headers: this._headers,
-    }).then(this._checkResponse);
+    return this._request("/users/me");
   }
 
-  // Method to get initial cards
   getInitialCards() {
-    return fetch(`${this._baseUrl}/cards`, {
-      headers: this._headers,
-    }).then(this._checkResponse);
+    return this._request("/cards");
   }
 
-  // Method to update user profile
   updateUserInfo(data) {
-    return fetch(`${this._baseUrl}/users/me`, {
+    return this._request("/users/me", {
       method: "PATCH",
-      headers: this._headers,
       body: JSON.stringify({
         name: data.name,
         about: data.about,
       }),
-    }).then(this._checkResponse);
+    });
   }
 
-  // Method to add a new card
   addCard(data) {
-    return fetch(`${this._baseUrl}/cards`, {
+    return this._request("/cards", {
       method: "POST",
-      headers: this._headers,
       body: JSON.stringify({
         name: data.name,
         link: data.link,
       }),
-    }).then(this._checkResponse);
+    });
   }
 
-  // Combined method to fetch user info and cards
-  getInitialData() {
-    return Promise.all([this.getUserInfo(), this.getInitialCards()]);
-  }
-
-  //method to delete
   deleteCard(cardId) {
-    return fetch(`${this._baseUrl}/cards/${cardId}`, {
+    return this._request(`/cards/${cardId}`, {
       method: "DELETE",
-      headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Error: ${res.status}`);
     });
   }
 
-  // Add a like to a card
   addLike(cardId) {
-    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+    return this._request(`/cards/${cardId}/likes`, {
       method: "PUT",
-      headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Error: ${res.status}`);
     });
   }
 
-  // Remove a like from a card
   removeLike(cardId) {
-    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+    return this._request(`/cards/${cardId}/likes`, {
       method: "DELETE",
-      headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Error: ${res.status}`);
     });
   }
 
   updateAvatar(avatarUrl) {
-    return fetch(`${this._baseUrl}/users/me/avatar`, {
+    return this._request("/users/me/avatar", {
       method: "PATCH",
-      headers: this._headers,
       body: JSON.stringify({ avatar: avatarUrl }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Error: ${res.status}`);
     });
+  }
+
+  // Combined method to fetch both user info and cards
+  getInitialData() {
+    return Promise.all([this.getUserInfo(), this.getInitialCards()]);
   }
 }
 

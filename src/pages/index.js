@@ -16,29 +16,39 @@ function handleImageClick(name, link) {
   imagePopup.open({ name, link });
 }
 
+// Function to handle like toggling
+function handleLikeClick(cardId, isLiked) {
+  if (isLiked) {
+    return api.addLike(cardId);
+  } else {
+    return api.removeLike(cardId);
+  }
+}
+
 // Create card function
 function createCard(cardData) {
+  console.log("Card Data:", cardData);
+
   const card = new Card(
-    cardData,
+    {
+      name: cardData.name,
+      link: cardData.link,
+      _id: cardData._id,
+      isLiked: cardData.isLiked,
+    },
     "#card-template",
     handleImageClick,
     (cardId) => {
-      console.log(`Opening confirmation popup for card ID: ${cardId}`);
-
       deleteConfirmationPopup.setSubmitAction(() => {
-        console.log(`Submitting delete request for card ID: ${cardId}`);
-        return api
-          .deleteCard(cardId)
-          .then(() => {
-            console.log(`API delete successful for card ID: ${cardId}`);
-            card.removeCard();
-            deleteConfirmationPopup.close();
-          })
-          .catch((err) => console.error("Error deleting card:", err));
+        return api.deleteCard(cardId).then(() => {
+          card.removeCard();
+          deleteConfirmationPopup.close();
+        });
       });
 
       deleteConfirmationPopup.open();
-    }
+    },
+    handleLikeClick
   );
   return card.getView();
 }
@@ -74,9 +84,7 @@ const profileEditPopup = new PopupWithForm(
           name: updatedData.name,
           job: updatedData.about,
         });
-        profileEditPopup.close();
-      })
-      .catch((err) => console.error("Error updating profile:", err));
+      });
   }
 );
 
@@ -89,9 +97,7 @@ const addCardPopup = new PopupWithForm(selectors.addCardPopup, (formData) => {
     .then((newCard) => {
       const card = createCard(newCard);
       cardSection.addItem(card);
-      addCardPopup.close();
-    })
-    .catch((err) => console.error("Error adding card:", err));
+    });
 });
 
 const deleteConfirmationPopup = new PopupWithConfirmation(
@@ -100,17 +106,13 @@ const deleteConfirmationPopup = new PopupWithConfirmation(
 deleteConfirmationPopup.setEventListeners();
 
 const avatarEditPopup = new PopupWithForm("#avatar-edit-popup", (formData) => {
-  return api
-    .updateAvatar(formData.avatar)
-    .then((updatedUserInfo) => {
-      userInfo.setUserInfo({
-        name: updatedUserInfo.name,
-        job: updatedUserInfo.about,
-        avatar: updatedUserInfo.avatar,
-      });
-      avatarEditPopup.close();
-    })
-    .catch((err) => console.error("Error updating avatar:", err));
+  return api.updateAvatar(formData.avatar).then((updatedUserInfo) => {
+    userInfo.setUserInfo({
+      name: updatedUserInfo.name,
+      job: updatedUserInfo.about,
+      avatar: updatedUserInfo.avatar,
+    });
+  });
 });
 avatarEditPopup.setEventListeners();
 
@@ -152,14 +154,17 @@ profileEditButton.addEventListener("click", () => {
     title: userData.name,
     description: userData.job,
   });
+  formValidators["profile-edit-form"].resetValidation();
 });
 
 avatarEditButton.addEventListener("click", () => {
   avatarEditPopup.open();
+  formValidators["avatar-edit-form"].resetValidation();
 });
 
 addCardButton.addEventListener("click", () => {
   addCardPopup.open();
+  formValidators["add-card-form"].resetValidation();
 });
 
 // Form validation
@@ -167,11 +172,10 @@ const formValidators = {};
 
 const enableValidation = (settings) => {
   const forms = Array.from(document.querySelectorAll(settings.formSelector));
-  console.log("Forms found by formSelector:", forms);
   forms.forEach((formElement) => {
     const validator = new FormValidator(settings, formElement);
     const formName = formElement.getAttribute("name");
-    console.log("Initializing validator for form:", formName);
+
     formValidators[formName] = validator;
     validator.enableValidation();
   });

@@ -26,22 +26,38 @@ export default class PopupWithForm extends Popup {
     });
   }
 
+  // Method to toggle the submit button state
+  _toggleSubmitButton() {
+    const isFormValid = this._form.checkValidity();
+    if (isFormValid) {
+      this._submitButton.removeAttribute("disabled");
+      this._submitButton.classList.remove("popup__button_disabled");
+    } else {
+      this._submitButton.setAttribute("disabled", true);
+      this._submitButton.classList.add("popup__button_disabled");
+    }
+  }
+
   setEventListeners() {
     super.setEventListeners();
+
+    // Add input event listener to toggle button state
+    this._inputList.forEach((input) => {
+      input.addEventListener("input", () => this._toggleSubmitButton());
+    });
+
     this._form.addEventListener("submit", (evt) => {
       evt.preventDefault();
       this._submitButton.textContent = "Saving...";
       this._handleFormSubmit(this._getInputValues())
-        .then(() => this.close())
+        .then(() => {
+          this.close();
+          this._form.reset();
+        })
         .catch((err) => console.error(err))
         .finally(() => {
           this._submitButton.textContent = this._submitButtonText;
         });
     });
-  }
-
-  close() {
-    super.close();
-    this._form.reset();
   }
 }
