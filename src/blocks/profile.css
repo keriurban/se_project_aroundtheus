@@ -75,6 +75,57 @@
   max-width: 373px;
 }
 
+/* Avatar Container */
+.profile__avatar-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  margin-right: 24px;
+}
+
+/* Avatar Overlay */
+.profile__avatar-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 50%;
+}
+
+/* Edit Button */
+.profile__avatar-edit-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 26px;
+  height: 26px;
+  background: transparent url("../images/edit-button.svg") center no-repeat;
+  background-size: contain;
+  border: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+  cursor: pointer;
+}
+
+/* Hover Effect */
+.profile__avatar-container:hover::before {
+  opacity: 1;
+}
+
+.profile__avatar-container:hover .profile__avatar-edit-button {
+  opacity: 1;
+}
+
 @media screen and (max-width: 725px) {
   .profile {
     max-width: calc(100% - 40px);
